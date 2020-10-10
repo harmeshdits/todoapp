@@ -8,6 +8,7 @@ import { todoActionTypes,Actions,TodoPostRequest,TodoDeleteRequest} from './Todo
 import { EntityState, EntityAdapter, createEntityAdapter, Update } from '@ngrx/entity';
 import {produce, PatchListener} from 'immer'
 import {undoRedo} from 'ngrx-wieder'
+import { act } from '@ngrx/effects';
 
 /* extend entity state with our custom properties */
 export interface TodoState extends EntityState<Todos> {
@@ -32,9 +33,11 @@ export const initialState = adapter.getInitialState({
 const reducer = (state, action: Actions, listener?: PatchListener) =>
   produce(state, next => {
     switch (action.type) {
-
       case TodoPostRequest.type:
-       next.todos.push({color:action.Todo.color})
+       next.todos.push({id: action.Todo.id, color:action.Todo.color, note:action.Todo.note, date: action.Todo.date})
+        return
+      case TodoDeleteRequest.type:
+      next.todos.splice(next.todos.findIndex(t => t.id === action.TodoId), 1)
         return
       default:
         return
