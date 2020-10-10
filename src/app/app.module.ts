@@ -17,7 +17,6 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 // import { reducers, metaReducers } from './store/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from 'src/environments/environment';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { SnackBarEffects } from './Store/SnackBarReducer/Facade/SnackBar.Effects';
 import { SnackBarComponent } from './Store/SnackBarReducer/Component/SnackBar.component';
@@ -38,8 +37,7 @@ import { SnackbarNotificationPipe } from './Store/SnackBarReducer/pipes/snackbar
     MaterialModule,
     TodoModule,
     EffectsModule.forRoot([SnackBarEffects]),
-    StoreModule.forRoot({}),  
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production})  
+    StoreModule.forRoot({})  
   ],
   providers: [SnackBarService],
   bootstrap: [AppComponent]
