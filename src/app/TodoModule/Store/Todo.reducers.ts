@@ -2,7 +2,7 @@ import { Todos} from '../Models/Todo.Model';
 import { createReducer, on } from '@ngrx/store';
 /* Action */
 
-import { todoActionTypes,Actions} from './Todo.actions';
+import { todoActionTypes,Actions,TodoPostRequest,TodoDeleteRequest} from './Todo.actions';
 /* Entity */ 
 
 import { EntityState, EntityAdapter, createEntityAdapter, Update } from '@ngrx/entity';
@@ -29,62 +29,25 @@ export const initialState = adapter.getInitialState({
   error: null
 });
 
-export const todoReducer = createReducer(
-        initialState, 
-        on(todoActionTypes.TodoLoadRequest, (state) => {
-            return { ...state, isLoaded: false }
-        }),
+const reducer = (state, action: Actions, listener?: PatchListener) =>
+  produce(state, next => {
+    switch (action.type) {
 
-        on(todoActionTypes.TodosLoadedSuccess, (state, action) => {
-            return adapter.addAll(action.Todos, { ...state, isLoaded: true, isLoading: false })
-        }),
+      case TodoPostRequest.type:
+       next.todos.push({color:action.Todo.color})
+        return
+      default:
+        return
+    }
+}, listener);
 
-        on(todoActionTypes.TodosLoadedFailed, (state, action) => {
-            return { ...state, isLoaded: false, isLoading: false, error: action.error }
-        }),
-            
-
-        on(todoActionTypes.TodoPostSuccess, (state, action) => {
-            return adapter.addOne(action.Todo, { ...state, isLoaded: true, isLoading: false })
-        }),
-
-        on(todoActionTypes.TodoPostFailed, (state, action) => {
-            return { ...state, isLoaded: false, isLoading: false, error: action.error }
-        }),
-
-        on(todoActionTypes.TodoDeleteSuccess, (state, action) => {
-            debugger
-            return adapter.removeOne(action.TodoId, { ...state, isLoaded: true, isLoading: false })
-        }),
-
-        on(todoActionTypes.TodoDeleteFailed, (state, action) => {
-            return { ...state, isLoaded: false, isLoading: false, error: action.error }
-        }),
-
-        on(todoActionTypes.TodoUpdateSuccess, (state, action) => {
-            const update: Update<Todos> = {
-                id: action.payload.id,
-                changes: {
-                    ...action.payload,
-                }
-            };
-            return adapter.updateOne(update, { ...state, isLoaded: true, isLoading: false })
-        }),
-
-        on(todoActionTypes.TodoUpdateFailed, (state, action) => {
-            return { ...state, isLoaded: false, isLoading: false, error: action.error?.message }
-        })
-
-
-);
 const undoableReducer = undoRedo({
   track: true,
   mergeActionTypes: [
-    todoActionTypes.TodoPostRequest.type
+    TodoDeleteRequest.type
   ]
-})(todoReducer)
+})(reducer)
 
 export function appReducer(state = initialState, action: Actions) {
   return undoableReducer(state, action)
 }
-export const {selectAll, selectEntities, selectIds } = adapter.getSelectors();
