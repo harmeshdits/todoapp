@@ -18,7 +18,7 @@ import { TodoModalComponent } from './Modals/Todo/TodoModals.Component'
 /* Ngrx Store*/
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { todoReducer } from './Store/Todo.reducers';
+import { appReducer } from './Store/Todo.reducers';
 import { TodoEffects } from './Store/Todo.effects';
 
 import { FilterTodosPipe } from "../TodoModule/Pipes/Todo.pipe";
@@ -46,7 +46,7 @@ import { HttpClientModule } from '@angular/common/http';
         RouterModule, 
         TodoRoutingModule,       
         EffectsModule.forFeature([TodoEffects]),    
-        StoreModule.forFeature("todo",todoReducer)       
+        StoreModule.forFeature("todo",appReducer)       
     ],
     entryComponents:[
       TodoModalComponent
