@@ -3,7 +3,6 @@ import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { SnackBarModel } from '../Models/SnackBar.model';
 
 import { Store } from '@ngrx/store';
-import { Todos } from 'src/app/TodoModule/Models/Todo.Model';
 
 @Component({
     selector: 'app-snack-bar',

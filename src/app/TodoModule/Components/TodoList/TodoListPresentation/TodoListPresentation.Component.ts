@@ -2,15 +2,15 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 /** Models and classes **/
-import { Todos } from 'src/app/TodoModule/Models/Todo.Model';
-import { ModelResponse } from 'src/app/TodoModule/Models/ModalResponse';
+import { Todos } from '../../../Models/Todo.Model';
+import { ModelResponse } from '../../../Models/ModalResponse';
 
 /** custom pipes **/
 import { FilterTodosPipe } from '../../../Pipes/Todo.pipe';
 
 /** dialog and componenets **/
 import { MatDialog } from '@angular/material/dialog';
-import { TodoModalComponent } from 'src/app/TodoModule/Modals/Todo/TodoModals.Component';
+import { TodoModalComponent } from '../../../Modals/Todo/TodoModals.Component';
 import { OnChanges } from '@angular/core';
 
 @Component({
