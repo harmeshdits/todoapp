@@ -85,6 +85,6 @@ const undoableReducer = undoRedo({
 })(todoReducer)
 
 export function appReducer(state = initialState, action: Actions) {
-  return undoableReducer(state, todoActionTypes.TodoPostRequest)
+  return undoableReducer(state, action)
 }
 export const {selectAll, selectEntities, selectIds } = adapter.getSelectors();
