@@ -71,7 +71,8 @@ export class TodoListComponent implements OnInit {
     
         snackBarRef.onAction().subscribe(() => {        
           this.todoModel.undo = true;   
-          console.log("Undo action perform");      
+          console.log("Undo action perform");   
+           this.store.dispatch({type: 'UNDO'});   
         });
     }
     
