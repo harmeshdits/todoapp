@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "note": "First",
+        "date": "",
+        "color": "#00bfff"
+    },
+    {
+        "id": 2,
+        "note": "Second",
+        "date": "",
+        "color": "#ff00ff"
+    },
+    {
+        "id": 3,
+        "note": "Third",
+        "date": "",
+        "color": "#ff00ff"
+    }
+]

@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.mb{
+  margin-bottom: 20px;
+}
+.pd{
+  color: #000;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 5px;
+}
+mat-sidenav-container{
+  min-height: 100%;
+}
+mat-sidenav{
+  min-width: 200px;
+}
+.list-items{
+  font-size: 14px !important;
+  font-weight: bold !important;
+}
+
+.toolbar_bg{
+  background-color: #ff4081; background-image: linear-gradient(to right, #ff4081, #db72db); color: #fff;
+}

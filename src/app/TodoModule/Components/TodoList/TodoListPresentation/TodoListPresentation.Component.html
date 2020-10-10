@@ -1,0 +1,7 @@
+
+<div class="row">   
+    <div class="col-md-2 mb" *ngFor="let card of cards|keyvalue|FilterTodos:selectedColor">
+        <!-- <span>{{card|json}}</span> -->
+        <mat-card class="pd" [style.backgroundColor]="card.value.color" (click)="editTodo(card.value)">{{card.value.note}}</mat-card>
+    </div>
+</div>
