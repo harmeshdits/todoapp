@@ -1,60 +1,59 @@
-import { Component, OnInit, Input, OnChanges} from '@angular/core';
-import { Todos } from '../../../Models/Todo.Model';
-import {FilterTodosPipe} from '../../../Pipes/Todo.pipe'
+/** angular core modules **/
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-//material module
+/** Models and classes **/
+import { Todos } from 'src/app/TodoModule/Models/Todo.Model';
+import { ModelResponse } from 'src/app/TodoModule/Models/ModalResponse';
+
+/** custom pipes **/
+import { FilterTodosPipe } from '../../../Pipes/Todo.pipe';
+
+/** dialog and componenets **/
 import { MatDialog } from '@angular/material/dialog';
-import { TodoModalComponent } from '../../../Modals/Todo/TodoModals.Component';
-import { Store } from '@ngrx/store';
-import * as todoAction from '../../../Store/Todo.actions';
-import { Update } from '@ngrx/entity';
-
+import { TodoModalComponent } from 'src/app/TodoModule/Modals/Todo/TodoModals.Component';
+import { OnChanges } from '@angular/core';
 
 @Component({
-    selector: 'app-todo-presentation',
-    templateUrl: './TodoListPresentation.Component.html' ,
-    providers: [FilterTodosPipe] 
+  selector: 'app-todo-presentation',
+  templateUrl: './TodoListPresentation.Component.html',
+  providers: [FilterTodosPipe]
 })
+export class TodoListPresentationComponent implements OnChanges{
+  public cards: Array<Todos> = new Array<Todos>();
+  public colorArray=[];
+  public toDoLength:number=0;
+  @Input() public toDosList: any;
+  @Input() public filterColor: any;
 
+  @Output() updateNoteEvent = new EventEmitter<any>();
+  @Output() deleteNoteEvent = new EventEmitter<Todos>();
+  @Output() addNoteEvent = new EventEmitter<Todos>();
 
-export class TodoListPresentationComponent implements OnInit, OnChanges {
-    
-    @Input() public data : Array<Todos>;       
-    public cards: any=[];
-    @Input() selectedColor:string;
+  constructor(public dialog: MatDialog) {}
 
-    constructor(
-        public dialog: MatDialog, private store : Store ) {  
-      }
-    
-    public ngOnInit(): void { }
-
-    public ngOnChanges(changes){       
-        this.cards = this.data;          
+  ngOnChanges(input){
+    if(input && input.toDosList){
+      this.toDoLength= Object.keys(input.toDosList.currentValue).length;
     }
+  }
 
-    /*Open edit modal*/ 
-    public editTodo(obj): void {
-        const addDialogRef = this.dialog.open(TodoModalComponent, {
-            width: '640px', disableClose: true, data: obj
-        });
-        addDialogRef.afterClosed().subscribe((res) => {
-            debugger
-            if (res.data.isDelete == true) {              
-                debugger
-                this.store.dispatch(todoAction.TodoDeleteRequest({ TodoId: res.data.id}));
-            }else{
-                const update: Update<Todos> = {
-                    id: res.id,
-                    changes: {
-                        ...res.data.todo,
-                    }
-                };
-                this.store.dispatch(todoAction.TodoUpdateRequest({update}))
-                
-            }
-        });
-    } 
+  public editTodo(input: Todos): void {
+    const addDialogRef = this.dialog.open(TodoModalComponent, {
+      width: '640px',
+      disableClose: true,
+       data: input,
+    });
+    addDialogRef.afterClosed().subscribe((output: ModelResponse) => {
+      if (output._status) {
+        this.deleteToDd(output._todo);
+      } else {
+        var prevModel = this.toDosList[input.id];
+        this.updateNoteEvent.emit({ prev: prevModel, curr: output._todo });
+      }
+    });
+  }
 
-
+  public deleteToDd(todo: Todos): void {
+    this.deleteNoteEvent.emit(todo);
+  }
 }

@@ -19,10 +19,10 @@ export class Colors{
 }
 
 export class Todos{
-    id: number
-    note:string
-    date: Date
-    color:string
+    id: number=0;
+    note:string="";
+    date: Date=new Date();
+    color:string="";
 }
 
 export class TodoModel{

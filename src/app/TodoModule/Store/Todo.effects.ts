@@ -49,7 +49,7 @@ export class TodoEffects {
             switchMap((action) => this.service.UPDATETODO(action.id,action.changes).pipe(        
                 mergeMap((payload) => [
                     todoAction.TodoUpdateSuccess({ payload: payload}),
-                    snackBarActions.ShowNotification({ payload: new SnackBarModel("Todod update", NotificationType.Success) })
+                   // snackBarActions.ShowNotification({ payload: new SnackBarModel("Todod update", NotificationType.Success) })
                 ]), catchError((error: any) => of(todoAction.TodoUpdateFailed({ error: error })))
             ))
         ), { dispatch: true }
@@ -62,7 +62,7 @@ export class TodoEffects {
         switchMap((action) => this.service.DeleteTodo(action).pipe(        
             mergeMap((payload) => [
                 todoAction.TodoDeleteSuccess({ TodoId: payload }),
-                snackBarActions.ShowNotification({ payload: new SnackBarModel("Todo deleted", NotificationType.Success) }),
+               // snackBarActions.ShowNotification({ payload: new SnackBarModel("Todo deleted", NotificationType.Success, payload ) }),
             ]), catchError((error: any) => of(todoAction.TodoDeleteFailed(error)))
         ))), 
         { dispatch: true }

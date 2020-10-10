@@ -25,7 +25,6 @@ export const TodoUpdateRequest = createAction("[Todo List Component] Todo Update
 export const TodoUpdateSuccess = createAction("[Todo List Component] Update Todo Success", props<{ payload: Todos }>());
 export const TodoUpdateFailed = createAction("[Todo List Component] Update Todo Failed", props<{ error: any }>());
 
-
 export const ShowLoader = createAction('[Utility] Show Loader');
 
 export const todoActionTypes = {

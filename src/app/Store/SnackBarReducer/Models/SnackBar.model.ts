@@ -1,7 +1,8 @@
 export class SnackBarModel {
     constructor(
         public body: string,
-        public type: NotificationType) {
+        public type: NotificationType,
+        public id?: number) {
     }
 }
 export enum NotificationType {

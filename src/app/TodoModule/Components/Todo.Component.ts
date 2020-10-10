@@ -7,7 +7,7 @@ import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Rout
 })
 
 
-export class TodoComponent implements OnInit {
+export class TodoComponent {
 
   public loading: boolean = true;
 
@@ -22,11 +22,5 @@ export class TodoComponent implements OnInit {
              }, 1500);
           }           
       });
-  }
-  
-  ngOnInit(): void {
-
-    }
-
-    
+  } 
 }

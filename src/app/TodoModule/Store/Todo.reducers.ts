@@ -51,8 +51,7 @@ export const todoReducer = createReducer(
             return { ...state, isLoaded: false, isLoading: false, error: action.error }
         }),
 
-        on(todoActionTypes.TodoDeleteSuccess, (state, action) => {
-            debugger
+        on(todoActionTypes.TodoDeleteSuccess, (state, action) => {         
             return adapter.removeOne(action.TodoId, { ...state, isLoaded: true, isLoading: false })
         }),
 
@@ -73,6 +72,8 @@ export const todoReducer = createReducer(
         on(todoActionTypes.TodoUpdateFailed, (state, action) => {
             return { ...state, isLoaded: false, isLoading: false, error: action.error?.message }
         })
+
+        
 
 
 );

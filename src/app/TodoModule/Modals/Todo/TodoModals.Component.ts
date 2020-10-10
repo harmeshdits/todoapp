@@ -1,45 +1,33 @@
 // Angular
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-
 /*Models*/ 
-import { Colors,Todos,TodoColors, TodoModel } from "../../Models/Todo.Model";
+import { Colors,Todos } from "../../Models/Todo.Model";
+import {ModelResponse} from '../../Models/ModalResponse';
+import { _MatTabGroupBase } from '@angular/material/tabs';
 
 @Component({
 	selector: 'app-todo-modal',
-	templateUrl: './TodoModal.Component.html'
+	templateUrl: './TodoModal.Component.html',
+	styleUrls:['./ToDoModal.Component.scss']
 })
-export class TodoModalComponent implements OnInit {
-	public note: string
-    public colorsList: any = [];
+export class TodoModalComponent {
+	public todo: Todos
+    public colors: any = [];
     
 	constructor(
-		public dialogRef: MatDialogRef<TodoModalComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any        
-      
-	) {
-        const c =  new Colors;
-        this.colorsList = c['List']; 
-        this.note = data.note;
-     }
-    
-    ngOnInit(){  }
-
-	deleteTodo(): void {
-		this.dialogRef.close({data: {"id": this.data.id, "isDelete": true}});
+		public dialogRef: MatDialogRef<TodoModalComponent>, @Inject(MAT_DIALOG_DATA) public data: Todos) {
+	    this.todo={...data};
+    	this.colors =  new Colors().List;
+	 }
+	 
+	public DeleteNote(): void {
+		this.dialogRef.close(new ModelResponse(true,this.todo) );
 	}
 
-	/* Close dialog with true result */
-	updateTodo(obj): void {	
-		setTimeout(() => {
-            let todo = {
-                "note": this.note,
-                "id": this.data.id,
-                "color": obj.colorCode,
-                "date": new Date()
-            }
-			this.dialogRef.close({ data:{"isDelete": false, "todo": todo }} ); 
-		}, 1500);
+	public UpdateNote(obj): void {	
+		this.todo.color=obj.colorCode;
+		this.dialogRef.close(new ModelResponse(false,this.todo));
 	}
 }

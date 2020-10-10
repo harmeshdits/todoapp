@@ -15,9 +15,6 @@ import { AppComponent } from './app.component';
 // /* Ngrx Store*/
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-// import { reducers, metaReducers } from './store/reducers';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { SnackBarEffects } from './Store/SnackBarReducer/Facade/SnackBar.Effects';
 import { SnackBarComponent } from './Store/SnackBarReducer/Component/SnackBar.component';
 import { SnackBarService } from './Store/SnackBarReducer/Service/SnackBar.Service';
@@ -30,14 +27,15 @@ import { SnackbarNotificationPipe } from './Store/SnackBarReducer/pipes/snackbar
     SnackbarNotificationPipe     
   ],
   imports: [
-    BrowserModule, 
-    AppRoutingModule,  
+
+    BrowserModule,
+    AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
     MaterialModule,
     TodoModule,
     EffectsModule.forRoot([SnackBarEffects]),
-    StoreModule.forRoot({})  
+    StoreModule.forRoot({}),   
   ],
   providers: [SnackBarService],
   bootstrap: [AppComponent]

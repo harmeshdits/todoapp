@@ -6,13 +6,13 @@
         <h2>Filter</h2>   
         </mat-toolbar>
           <mat-selection-list #shoes [multiple]="false">
-            <mat-list-option>
-              <span class="list-items" (click)="filterColors('all')">
+            <mat-list-option (click)="setSelectedColor(false)">
+              <span class="list-items" *ngIf="selectedColor == false || !selectedColor">
                 <mat-icon>check</mat-icon> Show All
             </span> 
             </mat-list-option>
-            <mat-list-option *ngFor="let color of colorsList" [value]="color.id" [style.backgroundColor]="color.colorCode" (click)="filterColors(color)">
-            <span class="list-items">
+            <mat-list-option *ngFor="let color of colors" [value]="color.id" [style.backgroundColor]="color.colorCode" (click)="setSelectedColor(color.colorCode)">
+            <span class="list-items" *ngIf="color.colorCode == selectedColor">
                 <mat-icon>check</mat-icon> Select
             </span> 
             </mat-list-option>
@@ -27,23 +27,31 @@
         </mat-toolbar>
 
         <!-- Note form -->
-        <div class="col-lg-12 mb">
-              <mat-card>                
+        
+        <div class="col-lg-12 mb notepos">
+              <mat-card style="width: 41%;margin: 0 auto;">                
                     <mat-form-field class="col-md-12">
-                      <mat-label>Note</mat-label>
-                      <textarea matInput placeholder="Enter text note" rows="5" cols="10" [(ngModel)]="note" name="note"></textarea>
+                      <mat-label>Enter your Todo task</mat-label>
+                      <textarea matInput placeholder="Todo task" rows="5" cols="10" [(ngModel)]="note" name="note"></textarea>
                     </mat-form-field>      
-                    <div class="col-md-12">
+                    <div class="col-md-12" *ngIf="note && note.length">
                       <div class="row">
-                        <div class="col-md-2" *ngFor="let c of colorsList" [style.backgroundColor]="c.colorCode" style="padding: 20px;" (click)="saveTodo(c)" >&nbsp;&nbsp;</div>
+                        <div class="color_selection" *ngFor="let color of colors" [style.backgroundColor]="color.colorCode" 
+                        style="padding: 20px;"
+                        (click)="SaveToDo(color)">&nbsp;&nbsp;</div>
                       </div>
                     </div> 
               </mat-card>
         </div>
 
         <!-- Cards View -->
-        <div class="col-lg-12">
-          <app-todo-presentation [data]="storeList$|async" [selectedColor]="selectedColor"></app-todo-presentation>
+        <div style="width: 40%;margin: 0 auto;">
+          <app-todo-presentation 
+            (updateNoteEvent)="UpdateToDoTask($event)"
+            (deleteNoteEvent)="DeleteToDoTask($event)"
+            [toDosList]="storeList$|async" 
+            [filterColor]="selectedColor">
+        </app-todo-presentation>
         </div>       
     </mat-sidenav-content>
 

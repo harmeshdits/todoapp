@@ -1,5 +1,9 @@
+<!-- 
+ <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar> -->
 
- <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+ <div class="loading-overlay" *ngIf="loading">
+    <mat-progress-bar  value="40" color="accent"></mat-progress-bar>
+  </div>
  
 <router-outlet></router-outlet>   
   

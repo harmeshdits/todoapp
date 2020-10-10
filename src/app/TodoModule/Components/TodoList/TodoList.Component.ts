@@ -1,87 +1,114 @@
-import { Component, OnInit } from '@angular/core';
+/*** Core angular modules ***/ 
+import { Component } from '@angular/core';
 
-/*Models*/ 
-import { Colors,Todos,TodoColors, TodoModel } from "../../Models/Todo.Model";
+/*** Models and classes ***/ 
+import { Colors,Todos } from "../../Models/Todo.Model";
+import {TimeMachine} from '../../Models/HistoryModel';
 
-/*Store*/ 
-import { TodoPostRequest } from '../../Store/Todo.actions';
+/***  NgRx modules ***/ 
+import { TodoDeleteRequest, TodoPostRequest, TodoUpdateRequest } from '../../Store/Todo.actions';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Entities, selectTodos } from '../../Store/Todo.selector';
+import { selectTodos } from '../../Store/Todo.selector';
+import { Update } from '@ngrx/entity';
 
+/*** Angular material ***/
 import {MatSnackBar} from '@angular/material/snack-bar';
+
 
 @Component({
     selector: 'app-todo-list',
-    templateUrl: './TodoList.Component.html'  
+    templateUrl: './TodoList.Component.html',
+    styleUrls:['./ToDoList.Component.scss'],
+   
 })
-
-
-export class TodoListComponent implements OnInit {
-
-    public opened: boolean;  
-    public colorsList: Array<TodoColors> = [];
-    public storeList$:Observable<any>;
-    public todoModel = new TodoModel;
-    public selectedColor: string;
+export class TodoListComponent {
+    public opened: boolean; 
     public note:string;
+    public selectedColor: string;
+    public colors =new Colors().List;
+    public storeList$:Observable<any>;
+    public todoModel = new Todos();
+    private timemachine:TimeMachine;
     
 
-    constructor(  
-        private store: Store<Todos>, 
-        private _snackBar : MatSnackBar) {        
+    constructor( private store: Store<Todos>,private _snackBar : MatSnackBar) {        
           this.storeList$=  this.store.select(selectTodos);
-
     }
 
-    ngOnInit(): void {   
-        const c =  new Colors;
-        this.colorsList = c['List'];  
+    /// Update todo task on backend as then change state in NgRx store
+    public UpdateToDoTask($event){
+       this.timemachine.CurrentVal=$event.curr;
+       this.timemachine.PastVal=$event.prev;
+       this.timemachine.action="update";
+       this.timemachine.id=$event.curr.id;
+       const update: Update<Todos> = {
+                    id: this.timemachine.id,
+                    changes: {
+                       ...this.timemachine.CurrentVal
+                    }
+                };
+       this.store.dispatch(TodoUpdateRequest({update:update}));
+       this.ToDoSnackBar();
     }
 
-    /*Save Tddo*/ 
-    saveTodo(obj){
-        this.todoModel.index = this.todoModel.index+1;
-        let input = { id: this.todoModel.index , note: this.note , date: new Date(), color:obj.colorCode };  
-        this.store.dispatch(TodoPostRequest({Todo:input}));
-        this.note = "";
-        this.actionConfirmation("Saved successfully", this.undoChanges, input)
+     /// Delete todo task from backend as well from NgRx store
+    public DeleteToDoTask($event){
+        this.timemachine.CurrentVal=$event;
+        this.timemachine.action="delete";
+        this.timemachine.id=$event.id;
+        this.store.dispatch(TodoDeleteRequest({TodoId:$event.id}));
+        this.ToDoSnackBar();
     }
 
-
-    showErrorMsg(message: string, action: string){       
-        this._snackBar.open(message, action, {
-            duration: 2000,
-        });
+    /// Save new todo task in NgRx store
+    public SaveToDo(color):void{
+        this.todoModel.id=this.GetTicks();        
+        this.todoModel.note=this.note;
+        //this.selectedColor= null
+        this.todoModel.color=color.colorCode;
+        this.store.dispatch(TodoPostRequest({Todo:this.todoModel}));
+        this.timemachine=new TimeMachine(this.todoModel.id,null,this.todoModel,"add");
+        this.todoModel=new Todos();
+        this.note="";
+        this.ToDoSnackBar();
     }
 
+    /// Use date ticks as a unique todo task id
+    private GetTicks(){
+        var date=new Date();
+        return date.getTime();
+    }
 
-    actionConfirmation(msg, func, data) {
-
-        this.todoModel.undo = false;
-        let snackBarRef = this._snackBar.open(msg, 'Undo', {
+    // Todo task notification after Save,update and Detete Operation
+    // Undo the previous state
+    private ToDoSnackBar():void {
+        let snackBarRef = this._snackBar.open("Success!!!", 'Undo', {
           duration: 2000
         });
       
-        setTimeout( () => {
-          if(!this.todoModel.undo){ 
-            func(data);
-          }
-        }, 3000);
-    
         snackBarRef.onAction().subscribe(() => {        
-          this.todoModel.undo = true;   
-          console.log("Undo action perform");      
+          if(this.timemachine.action==='add'){
+              this.store.dispatch(TodoDeleteRequest({TodoId:this.timemachine.id}))
+          }  
+          else if(this.timemachine.action==='update')  
+          {
+            const update: Update<Todos> = {
+                id: this.timemachine.id,
+                changes: {
+                   ...this.timemachine.PastVal
+                }
+            };
+              this.store.dispatch(TodoUpdateRequest({update:update}));
+          }
+          else if(this.timemachine.action==="delete"){
+            this.store.dispatch(TodoPostRequest({Todo:this.timemachine.CurrentVal}));
+          }
         });
     }
-    
-    undoChanges(data){ 
-        console.log(data);
+
+    setSelectedColor(color){        
+        this.selectedColor=color;
     }
 
-    filterColors(c){        
-        this.selectedColor=c.colorCode;
-    }
-    
- 
 }
