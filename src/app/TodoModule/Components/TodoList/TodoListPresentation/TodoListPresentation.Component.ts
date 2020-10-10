@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, OnChanges} from '@angular/core';
-import { Todos } from 'src/app/TodoModule/Models/Todo.Model';
+import { Todos } from '../../../Models/Todo.Model';
 import {FilterTodosPipe} from '../../../Pipes/Todo.pipe'
 
 //material module
 import { MatDialog } from '@angular/material/dialog';
-import { TodoModalComponent } from 'src/app/TodoModule/Modals/Todo/TodoModals.Component';
+import { TodoModalComponent } from '../../../Modals/Todo/TodoModals.Component';
 import { Store } from '@ngrx/store';
 import * as todoAction from '../../../Store/Todo.actions';
 import { Update } from '@ngrx/entity';
