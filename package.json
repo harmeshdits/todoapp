@@ -32,7 +32,9 @@
     "rxjs": "6.5.5",
     "src": "^1.1.2",
     "tslib": "2.0.3",
-    "zone.js": "0.10.3"
+    "zone.js": "0.10.3",
+    "immer": "3.1.1",
+    "ngrx-wieder": "1.0.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.8",

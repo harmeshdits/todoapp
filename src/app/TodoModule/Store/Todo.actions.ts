@@ -34,3 +34,4 @@ export const todoActionTypes = {
     TodoDeleteRequest, TodoDeleteSuccess, TodoDeleteFailed,
     TodoUpdateRequest, TodoUpdateSuccess, TodoUpdateFailed
 }
+export type Actions = typeof todoActionTypes;

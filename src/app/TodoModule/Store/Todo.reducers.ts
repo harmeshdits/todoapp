@@ -2,11 +2,12 @@ import { Todos} from '../Models/Todo.Model';
 import { createReducer, on } from '@ngrx/store';
 /* Action */
 
-import { todoActionTypes} from './Todo.actions';
+import { todoActionTypes,Actions} from './Todo.actions';
 /* Entity */ 
 
 import { EntityState, EntityAdapter, createEntityAdapter, Update } from '@ngrx/entity';
-
+import {produce, PatchListener} from 'immer'
+import {undoRedo} from 'ngrx-wieder'
 
 /* extend entity state with our custom properties */
 export interface TodoState extends EntityState<Todos> {
@@ -76,5 +77,14 @@ export const todoReducer = createReducer(
 
 
 );
+const undoableReducer = undoRedo({
+  track: true,
+  mergeActionTypes: [
+    todoActionTypes.TodoPostRequest.type
+  ]
+})(todoReducer)
 
+export function appReducer(state = initialState, action: Actions) {
+  return undoableReducer(state, todoActionTypes.TodoPostRequest)
+}
 export const {selectAll, selectEntities, selectIds } = adapter.getSelectors();
