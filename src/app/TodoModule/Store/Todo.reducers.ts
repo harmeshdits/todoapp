@@ -2,11 +2,13 @@ import { Todos} from '../Models/Todo.Model';
 import { createReducer, on } from '@ngrx/store';
 /* Action */
 
-import { todoActionTypes} from './Todo.actions';
+import { todoActionTypes,Actions,TodoPostRequest,TodoDeleteRequest} from './Todo.actions';
 /* Entity */ 
 
 import { EntityState, EntityAdapter, createEntityAdapter, Update } from '@ngrx/entity';
-
+import {produce, PatchListener} from 'immer'
+import {undoRedo} from 'ngrx-wieder'
+import { act } from '@ngrx/effects';
 
 /* extend entity state with our custom properties */
 export interface TodoState extends EntityState<Todos> {
@@ -28,6 +30,7 @@ export const initialState = adapter.getInitialState({
   error: null
 });
 
+<<<<<<< HEAD
 export const todoReducer = createReducer(
         initialState, 
         on(todoActionTypes.TodoLoadRequest, (state) => {
@@ -79,3 +82,29 @@ export const todoReducer = createReducer(
 );
 
 export const {selectAll, selectEntities, selectIds } = adapter.getSelectors();
+=======
+const reducer = (state, action: Actions, listener?: PatchListener) =>
+  produce(state, next => {
+    switch (action.type) {
+      case TodoPostRequest.type:
+       next.todos.push({id: action.Todo.id, color:action.Todo.color, note:action.Todo.note, date: action.Todo.date})
+        return
+      case TodoDeleteRequest.type:
+      next.todos.splice(next.todos.findIndex(t => t.id === action.TodoId), 1)
+        return
+      default:
+        return
+    }
+}, listener);
+
+const undoableReducer = undoRedo({
+  track: true,
+  mergeActionTypes: [
+    TodoDeleteRequest.type
+  ]
+})(reducer)
+
+export function appReducer(state = initialState, action: Actions) {
+  return undoableReducer(state, action)
+}
+>>>>>>> 2137abf28e1f27b61d0ffbadb17079cff3a561b9

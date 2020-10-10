@@ -1,5 +1,5 @@
 /* ngrx core modules */
-import { createAction, props } from '@ngrx/store';
+import { createAction, props, union } from '@ngrx/store';
 
 /* ngrx entity */
 import { Update } from '@ngrx/entity';
@@ -27,9 +27,10 @@ export const TodoUpdateFailed = createAction("[Todo List Component] Update Todo 
 
 export const ShowLoader = createAction('[Utility] Show Loader');
 
-export const todoActionTypes = {
+export const todoActionTypes = union({
     TodoLoadRequest, TodosLoadedSuccess, TodosLoadedFailed,
     TodoPostRequest, TodoPostSuccess, TodoPostFailed,
     TodoDeleteRequest, TodoDeleteSuccess, TodoDeleteFailed,
     TodoUpdateRequest, TodoUpdateSuccess, TodoUpdateFailed
-}
+})
+export type Actions = typeof todoActionTypes;
