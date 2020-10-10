@@ -48,6 +48,9 @@ import { HttpClientModule } from '@angular/common/http';
         EffectsModule.forFeature([TodoEffects]),    
         StoreModule.forFeature("todo",todoReducer)       
     ],
+    entryComponents:[
+      TodoModalComponent
+    ],
     providers:[TodoService],   
 })
 
