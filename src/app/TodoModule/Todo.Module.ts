@@ -10,8 +10,8 @@ import { TodoRoutingModule } from "./Todo.Module.Routing";
 
 /*Components*/
 import { TodoComponent } from "../TodoModule/Components/Todo.Component";
-import { TodoListComponent } from "Components/TodoList/TodoList.Component";
-import { TodoListPresentationComponent } from "Components/TodoList/TodoListPresentation/TodoListPresentation.component";
+import { TodoListComponent } from "../TodoModule/Components/TodoList/TodoList.Component";
+import { TodoListPresentationComponent } from "../TodoModule/Components/TodoList/TodoListPresentation/TodoListPresentation.Component";
 import { FormsModule } from '@angular/forms';
 import { TodoModalComponent } from './Modals/Todo/TodoModals.Component'
 
