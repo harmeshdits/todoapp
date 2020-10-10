@@ -3,7 +3,7 @@ import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Rout
 
 @Component({
     selector: 'app-todo',
-    templateUrl: './Todo.component.html'  
+    templateUrl: 'Todo.Component.html'  
 })
 
 

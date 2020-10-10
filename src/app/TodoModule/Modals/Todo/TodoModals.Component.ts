@@ -8,7 +8,7 @@ import { Colors,Todos,TodoColors, TodoModel } from "../../Models/Todo.Model";
 
 @Component({
 	selector: 'app-todo-modal',
-	templateUrl: './TodoModal.component.html'
+	templateUrl: './TodoModal.Component.html'
 })
 export class TodoModalComponent implements OnInit {
 	public note: string

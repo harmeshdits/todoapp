@@ -14,7 +14,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-todo-list',
-    templateUrl: './TodoList.component.html'  
+    templateUrl: './TodoList.Component.html'  
 })
 
 
